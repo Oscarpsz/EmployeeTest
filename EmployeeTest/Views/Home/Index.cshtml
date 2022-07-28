@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Employee List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Home" asp-action="AddEmployee" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> &nbsp; Add new Employee
+            </a>
+        </div>
+    </div>
+</div>
+
+<table id="t_employees" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Last Name</th>
+            <th>RFC</th>
+            <th>Born Date</th>
+            <th>Status</th>
+        </tr>        
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+
+@section Scripts{
+    @*Style*@
+    <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet"/>
+    @*JS*@
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    @*Scripts*@
+    <script>        
+        $(document).ready(function () {
+            $('#t_employees').DataTable({
+                order: [[3, 'asc']],
+                ajax: {
+                    url:"@Url.Action("GetEmployees", "Home")",
+                    type: "GET",
+                    datatype: "json"
+                },
+                columns: [
+                    { data: "id"},
+                    { data: "name"},
+                    { data: "lastName"},
+                    { data: "rfc"},
+                    { data: "bornDate"},
+                    { data: "status"},
+                ],
+                "columnDefs": [
+                    { "targets": [0,3,2,4,5], "searchable": false }
+    ]
+            });
+        });
+    </script>
+}
